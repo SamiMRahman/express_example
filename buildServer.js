@@ -37,6 +37,36 @@ const app = express() // initialize Express
      response.send('Hello, ' + name + '!')
 
  }
+
+ /** Middleware is code that runs in between when an HTTP request comes in and
+  * when it gets passed off to endpoint handler. */
+ function addTimeStamp(request, response, next) {
+
+    /** Pass 'Date' object to endpoint handlers thruogh the 'request' object. */
+     request.timestamp = new Date()
+
+     /** Prints out time stamp, so we can see middleware in action. */
+     console.log(request.timestamp)
+
+     /** Tells Express that middleware function is done
+      * and that Express should call whatever comes next.
+      * If 'next()' is left out, we are telling Express to stop at our
+      * middleware function, which means we must honor HTTP protocol
+      * and send out an HTTP response ourselves. */
+     next()
+
+ }
+
+ /** Tells Express to call our middleware. */
+ app.use(addTimeStamp)
+
+ /** Tells Express to call 'express.static' middleware.
+  * Express automatically looks for 'index.html' file even if just
+  * 'public' folder is specified (don't need to type full path to
+  * html page)
+ */
+ app.use('/files', express.static('public'))
+
  /** Link handler to Express router. Tell Express to run
   * 'helloHandler' function for the 'GET/hello endpoint */
  app.get('/hello', helloHandler)
