@@ -19,9 +19,17 @@ const app = express() // initialize Express
      * access query params in handler using 'request.query' object */
      const name = request.query.name
 
+     /** checks if client forgot the name query param */
+     if (typeof name == 'undefined' || name.length == 0) {
+         response.status(400) // Bad request status code
+         response.send('You forgot your name!')
+         return // exit endpoint handler function early so nothing below runs
+     }
+
      /** passes HTTP protocol response status code to tell
       * HTTP client how their request went */
      response.status(200)
+
      /** At end of every handler, we must send out response.
       * Otherwise, basic rules of HTTP protocol are broken.
       * 'response.send'
