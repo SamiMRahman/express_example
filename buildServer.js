@@ -18,7 +18,11 @@ const app = express() // initialize Express
 
     /** Query Parameters are the 'weird' stuff at end of a URL
      * access query params in handler using 'request.query' object */
-     const name = request.query.name
+    //  const name = request.query.name
+
+    /** Route parameters are embedded directly into Express routes
+     * and are a built-in, cleaner alternative.*/
+    const name = request.params.name
 
      /** checks if client forgot the name query param */
      if (typeof name == 'undefined' || name.length == 0) {
@@ -70,8 +74,13 @@ const app = express() // initialize Express
  app.use(bodyParser.json()) // tells Express to use body-parser middleware
 
  /** Link handler to Express router. Tell Express to run
-  * 'helloHandler' function for the 'GET/hello endpoint */
- app.get('/hello', helloHandler) // Route-specific middleware
+  * 'helloHandler' function for the 'GET/hello endpoint.
+  * Query parameter. */
+ // app.get('/hello', helloHandler)
 
+ /** Syntax is '/:<param_name>' and we append it to route path. */
+ app.get('/hello/:name', helloHandler)
+
+ app.use(bodyParser.urlencoded({extended: true})) // uses urlencoded middleware
 
  app.listen(3000) // runs Express starting on port 3000
