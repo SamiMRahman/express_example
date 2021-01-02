@@ -1,11 +1,12 @@
 // building your own HTTP Server
-/**
- * Express router takes in an HTTP request
+
+/** Express router takes in an HTTP request
  * breaks it down into its method and path
  * tries to find an endpoint (place to stop at)
- * passes HTTP request off to that endpoint's handler
- */
-const express = require("express") // include Express
+ * passes HTTP request off to that endpoint's handler */
+
+const bodyParser = require("body-parser") // inlcudes body-parser
+const express = require("express") // includes Express
 const app = express() // initialize Express
 
 /**
@@ -63,13 +64,14 @@ const app = express() // initialize Express
  /** Tells Express to call 'express.static' middleware.
   * Express automatically looks for 'index.html' file even if just
   * 'public' folder is specified (don't need to type full path to
-  * html page)
- */
- app.use('/files', express.static('public'))
+  * html page). Will run only for '/files' path. */
+ app.use('/files', express.static('public')) // Route-specific middleware
+
+ app.use(bodyParser.json()) // tells Express to use body-parser middleware
 
  /** Link handler to Express router. Tell Express to run
   * 'helloHandler' function for the 'GET/hello endpoint */
- app.get('/hello', helloHandler)
+ app.get('/hello', helloHandler) // Route-specific middleware
 
 
- app.listen(3000) // runs Express
+ app.listen(3000) // runs Express starting on port 3000
