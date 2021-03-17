@@ -24,7 +24,8 @@ const app = express() // initialize Express
      * and are a built-in, cleaner alternative.*/
     const name = request.params.name
 
-     /** checks if client forgot the name query param */
+     /** Checks if client forgot the name query param.
+      * Only runs if we use query params, not route params */
      if (typeof name == 'undefined' || name.length == 0) {
          response.status(400) // Bad request status code
          response.send('You forgot your name!')
@@ -69,7 +70,7 @@ const app = express() // initialize Express
   * Express automatically looks for 'index.html' file even if just
   * 'public' folder is specified (don't need to type full path to
   * html page). Will run only for '/files' path. */
- app.use('/files', express.static('public')) // Route-specific middleware
+ app.use('/home', express.static('public')) // Route-specific middleware
 
  app.use(bodyParser.json()) // tells Express to use body-parser middleware
 
@@ -80,7 +81,8 @@ const app = express() // initialize Express
 
  /** Syntax is '/:<param_name>' and we append it to route path. */
  app.get('/hello/:name', helloHandler)
-
+/** GET requests store form data as query params
+ * POST requests store form data in the request body (more likely) */
  app.use(bodyParser.urlencoded({extended: true})) // uses urlencoded middleware
 
  app.listen(3000) // runs Express starting on port 3000
